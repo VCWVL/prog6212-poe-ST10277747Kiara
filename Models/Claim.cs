@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CMCSART3.Models
+namespace CMCSPART3.Models
 {
     public class Claim
     {
