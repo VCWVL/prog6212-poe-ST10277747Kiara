@@ -32,7 +32,7 @@ namespace CMCSP3.Models
         [Display(Name = "Role")]
         public string Role { get; set; } = "Lecturer";
 
-        // Password field: Required for Add, optional for Edit.
+       
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password (Required for New User)")]

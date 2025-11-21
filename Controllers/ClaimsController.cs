@@ -1,6 +1,7 @@
 ﻿using CMCSP3.Data;
 using CMCSP3.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -10,7 +11,6 @@ namespace CMCSP3.Controllers
     {
         private readonly CMCSDbContext _context;
 
-    // Static memory list (as you had)
     private static List<Claim> _claims = new();
         private static int _nextClaimId = 1;
 
@@ -19,9 +19,7 @@ namespace CMCSP3.Controllers
             _context = context;
         }
 
-        // ===========================
-        // Claims List Per Role
-        // ===========================
+        
         public IActionResult Index()
         {
             var role = HttpContext.Session.GetString("Role");
@@ -41,9 +39,7 @@ namespace CMCSP3.Controllers
             return View(claimsToShow);
         }
 
-        // ===========================
-        // GET: Submit Claim
-        // ===========================
+       
         public IActionResult Create()
         {
             var role = HttpContext.Session.GetString("Role");
@@ -52,7 +48,7 @@ namespace CMCSP3.Controllers
             if (role == null || role != "Lecturer")
                 return RedirectToAction("Login", "Account");
 
-            // Load lecturer from DB
+           
             var lecturer = _context.Users.FirstOrDefault(u => u.LecturerId == lecturerId);
 
             if (lecturer != null)
@@ -69,9 +65,7 @@ namespace CMCSP3.Controllers
         }
 
 
-        // ===========================
-        // POST: Submit Claim
-        // ===========================
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Claim claim, IFormFile? SupportingDocument)
@@ -83,7 +77,7 @@ namespace CMCSP3.Controllers
 
             claim.ClaimDate = DateTime.Now;
 
-            // Load lecturer again from DB (auto fill)
+            
             var lecturer = _context.Users.FirstOrDefault(u => u.LecturerId == lecturerId);
 
             if (lecturer != null)
@@ -92,17 +86,14 @@ namespace CMCSP3.Controllers
                 claim.HourlyRate = lecturer.HourlyRate;
             }
 
-            // Auto calculate claim amount
+           
             claim.ClaimAmount = claim.HoursWorked * claim.HourlyRate;
 
-            // Remove manual ClaimId assignment for EF Core
-            // claim.ClaimId = _nextClaimId++;   <-- COMMENTED OUT
+           
 
             claim.Status = "Pending";
 
-            // ------------------------
-            // FILE UPLOAD (no changes)
-            // ------------------------
+           
             if (SupportingDocument != null && SupportingDocument.Length > 0)
             {
                 var allowedExtensions = new[] { ".pdf", ".docx", ".xlsx" };
@@ -134,12 +125,10 @@ namespace CMCSP3.Controllers
                 claim.SupportingDocumentPath = "/Documents/" + encryptedFileName;
             }
 
-            // ==========================
-            // SAVE TO BOTH DB & LIST
-            // ==========================
-            _claims.Add(claim);         // Your original memory list
-            _context.Claims.Add(claim); // Save to database
-            _context.SaveChanges();      // EF Core generates ClaimId automatically
+            
+            _claims.Add(claim);        
+            _context.Claims.Add(claim); 
+            _context.SaveChanges();      
 
             TempData["Success"] = "Claim Submitted Successfully!";
             return RedirectToAction(nameof(Index));
@@ -147,28 +136,33 @@ namespace CMCSP3.Controllers
 
 
 
-        // ===========================
-        // CLAIM DETAILS
-        // ===========================
-        public IActionResult Details(int id)
+
+        public async Task<IActionResult> Details(int id)
         {
             var role = HttpContext.Session.GetString("Role");
             var lecturerId = HttpContext.Session.GetInt32("LecturerId");
 
-            if (role == null) return RedirectToAction("Login", "Account");
+            if (role == null)
+                return RedirectToAction("Login", "Account");
 
-            var claim = _claims.FirstOrDefault(c => c.ClaimId == id);
-            if (claim == null) return NotFound();
+            var claim = await _context.Claims
+                .AsNoTracking() 
+                .FirstOrDefaultAsync(c => c.ClaimId == id);
 
+            if (claim == null)
+                return NotFound();
+
+           
             if (role == "Lecturer" && claim.LecturerId != lecturerId)
                 return RedirectToAction("Login", "Account");
 
-            return View(claim);
+            return View(claim); 
         }
 
-        // =============================
-        // PROGRAMME COORDINATOR VERIFY
-        // =============================
+
+
+
+
         [HttpPost]
         public IActionResult VerifyClaim(int id)
         {
@@ -189,9 +183,7 @@ namespace CMCSP3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // =============================
-        // ACADEMIC MANAGER APPROVE
-        // =============================
+       
         [HttpPost]
         public IActionResult ApproveClaim(int id)
         {
@@ -218,9 +210,7 @@ namespace CMCSP3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // =============================
-        // Filename Encryption
-        // =============================
+       
         private string EncryptFileName(string input)
         {
             using var sha = SHA256.Create();
@@ -233,3 +223,4 @@ namespace CMCSP3.Controllers
 
 
 }
+//Caulfield, J. (2020) Reference a Website in Harvard Style | Templates & Examples. Available at: https://www.scribbr.co.uk/referencing/harvard-website-reference/ (Accessed: 17 September 2025).

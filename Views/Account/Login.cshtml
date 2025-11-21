@@ -59,7 +59,7 @@
                             <input type="number" class="form-control" name="lecturerId" id="lecturerId" />
                         </div>
 
-                        <!-- HR LOGIN NOTE: Select Role=HR, Username=hr1, Password=HR.Company@1004 -->
+                        <!-- HR LOGIN: Select Role=HR, Username=hr1, Password=HR.Company@1004 -->
 
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
@@ -89,7 +89,7 @@
                 }
             });
 
-            // Conditional visibility for Lecturer ID field
+           
             function updateLecturerIdVisibility() {
                 const selectedRole = roleDropdown.value;
                 if (selectedRole === 'Lecturer') {
@@ -103,7 +103,7 @@
 
             roleDropdown.addEventListener('change', updateLecturerIdVisibility);
 
-            // Set initial visibility
+            
             updateLecturerIdVisibility();
         });
     </script>

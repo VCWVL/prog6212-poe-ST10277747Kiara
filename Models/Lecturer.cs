@@ -18,7 +18,7 @@ namespace CMCSP3.Models
 
         [Required, Display(Name = "First Name")]
 
-        public string FirstName { get; set; } = string.Empty; // initialized to avoid warning
+        public string FirstName { get; set; } = string.Empty; 
 
 
 

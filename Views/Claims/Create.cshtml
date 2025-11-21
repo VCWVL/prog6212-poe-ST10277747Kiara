@@ -2,8 +2,7 @@
 
 @{
     ViewData["Title"] = "Submit Claim";
-    // Parse the hourly rate from ViewBag to a numeric type for the script
-    // Assuming ViewBag.HourlyRate is a string like "150.00" or a decimal
+   
     decimal hourlyRate = 0;
     if (ViewBag.HourlyRate != null)
     {
@@ -71,25 +70,22 @@
 
     <script>
         $(document).ready(function () {
-            // Function to perform the calculation and update the display
+           
             function calculateTotalClaim() {
-                // Get the values
+                
                 var hoursWorked = parseFloat($('#hoursWorkedInput').val()) || 0;
-                // Use the value from the hidden input for the calculation
+               
                 var hourlyRate = parseFloat($('#hourlyRateInput').val()) || 0;
 
-                // Calculate the total
+              
                 var totalAmount = hoursWorked * hourlyRate;
 
-                // Format the total to two decimal places and update the display
-                // Use toLocaleString for currency formatting (optional, but good practice)
                 $('#totalClaimAmount').text(totalAmount.toFixed(2));
             }
 
-            // Bind the calculation function to the input event of the HoursWorked field
             $('#hoursWorkedInput').on('input', calculateTotalClaim);
 
-            // Run the calculation once on page load in case there's an initial value
+            
             calculateTotalClaim();
         });
     </script>

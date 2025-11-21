@@ -11,12 +11,12 @@ namespace CMCSP3.Controllers
 
         public DocumentsController()
         {
-            // Ensure main folder exists
+           
             if (!Directory.Exists(_rootFolder))
                 Directory.CreateDirectory(_rootFolder);
         }
 
-        // GET: Documents list
+        
         public IActionResult Index()
         {
             var lecturerId = HttpContext.Session.GetInt32("LecturerId");
@@ -27,7 +27,7 @@ namespace CMCSP3.Controllers
             if (!Directory.Exists(lecturerFolder))
                 Directory.CreateDirectory(lecturerFolder);
 
-            // Return file names only
+           
             var fileList = Directory.GetFiles(lecturerFolder)
                 .Select(f => Path.GetFileName(f))
                 .ToList();
@@ -36,7 +36,7 @@ namespace CMCSP3.Controllers
             return View(fileList);
         }
 
-        // GET: Document details
+     
         public IActionResult Details(string fileName)
         {
             var lecturerId = HttpContext.Session.GetInt32("LecturerId");
@@ -62,7 +62,7 @@ namespace CMCSP3.Controllers
             return View(model);
         }
 
-        // POST: Upload document
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upload(IFormFile file)
@@ -95,11 +95,11 @@ namespace CMCSP3.Controllers
             if (!Directory.Exists(lecturerFolder))
                 Directory.CreateDirectory(lecturerFolder);
 
-            // Keep original file name (user-friendly)
+          
             string originalName = Path.GetFileName(file.FileName);
             string finalPath = Path.Combine(lecturerFolder, originalName);
 
-            // Handle duplicates by adding _1, _2
+           
             int counter = 1;
             while (System.IO.File.Exists(finalPath))
             {
@@ -109,7 +109,7 @@ namespace CMCSP3.Controllers
                 counter++;
             }
 
-            // Save file
+            
             using (var stream = new FileStream(finalPath, FileMode.Create))
             {
                 file.CopyTo(stream);
@@ -119,7 +119,7 @@ namespace CMCSP3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // DOWNLOAD a file
+        
         public IActionResult Download(string fileName)
         {
             var lecturerId = HttpContext.Session.GetInt32("LecturerId");
@@ -134,7 +134,7 @@ namespace CMCSP3.Controllers
             return File(fileBytes, "application/octet-stream", fileName);
         }
 
-        // DELETE a file
+       
         public IActionResult Delete(string fileName)
         {
             var lecturerId = HttpContext.Session.GetInt32("LecturerId");

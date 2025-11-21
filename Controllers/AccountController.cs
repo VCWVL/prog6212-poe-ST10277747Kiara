@@ -17,14 +17,14 @@ namespace CMCSP3.Controllers
             _context = context;
         }
 
-        // GET: /Account/Login
+       
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /Account/Login
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string username, string password, string role, int? lecturerId)
@@ -35,7 +35,7 @@ namespace CMCSP3.Controllers
                 return View();
             }
 
-            // -------- HR Login (hardcoded) --------
+           
             if (role == "HR" && username == "hr1" && password == "HR.Company@1004")
             {
                 HttpContext.Session.SetString("Username", username);
@@ -44,7 +44,7 @@ namespace CMCSP3.Controllers
                 return RedirectToAction("Index", "HR");
             }
 
-            // -------- Lecturer login (no password verification, any username/id) --------
+           
             if (role == "Lecturer")
             {
                 HttpContext.Session.SetString("Username", username);
@@ -53,7 +53,7 @@ namespace CMCSP3.Controllers
                 return RedirectToAction("Create", "Claims");
             }
 
-            // -------- Database login for other roles (ProgrammeCoordinator, AcademicManager) --------
+            
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Role == role && u.IsActive);
             if (user == null || !PasswordHasher.Verify(password, user.HashedPassword))
             {
@@ -66,7 +66,7 @@ namespace CMCSP3.Controllers
             HttpContext.Session.SetString("Role", user.Role);
             HttpContext.Session.SetInt32("LecturerId", lecturerId ?? 0);
 
-            // Role-based redirect
+           
             return role switch
             {
                 "ProgrammeCoordinator" => RedirectToAction("Index", "ProgrammeCoordinator"),
@@ -76,7 +76,7 @@ namespace CMCSP3.Controllers
         }
 
 
-        // GET: /Account/Logout
+       
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();

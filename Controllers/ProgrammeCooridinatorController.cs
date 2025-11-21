@@ -16,10 +16,10 @@ namespace CMCSP3.Controllers
             _context = context;
         }
 
-        // GET: /ProgrammeCoordinator/Index
+       
         public async Task<IActionResult> Index()
         {
-            // Show pending claims from DB
+          
             var pendingClaims = await _context.Claims
                 .Where(c => c.Status == "Pending")
                 .OrderByDescending(c => c.SubmittedDate)
@@ -28,7 +28,7 @@ namespace CMCSP3.Controllers
             return View(pendingClaims);
         }
 
-        // POST: /ProgrammeCoordinator/Verification/5
+        
         [HttpPost]
         public async Task<IActionResult> Verification(int id)
         {
@@ -48,7 +48,7 @@ namespace CMCSP3.Controllers
             return RedirectToAction("Confirmation");
         }
 
-        // POST: /ProgrammeCoordinator/Reject/5
+      
         [HttpPost]
         public async Task<IActionResult> Reject(int id)
         {
@@ -68,7 +68,6 @@ namespace CMCSP3.Controllers
             return RedirectToAction("Confirmation");
         }
 
-        // GET: /ProgrammeCoordinator/Confirmation
         public IActionResult Confirmation()
         {
             ViewBag.Message = TempData["Message"];
@@ -77,3 +76,4 @@ namespace CMCSP3.Controllers
         }
     }
 }
+//Caulfield, J. (2020) Reference a Website in Harvard Style | Templates & Examples. Available at: https://www.scribbr.co.uk/referencing/harvard-website-reference/ (Accessed: 17 September 2025).

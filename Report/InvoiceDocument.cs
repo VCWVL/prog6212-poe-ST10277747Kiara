@@ -1,4 +1,4 @@
-﻿// CMCSP3.Reports/InvoiceDocument.cs
+﻿
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -67,23 +67,23 @@ namespace CMCSP3.Reports
             {
                 column.Spacing(20);
 
-                // Lecturer Info
+               
                 column.Item().Text("BILL TO:").Bold().FontSize(12);
                 column.Item().Text($"{Lecturer.FirstName} {Lecturer.LastName}").FontSize(12);
                 column.Item().Text(Lecturer.Email).FontSize(12);
 
-                // Claim Table
+                
                 column.Item().Table(table =>
                 {
                     table.ColumnsDefinition(columns =>
                     {
-                        columns.RelativeColumn(4); // Description
-                        columns.RelativeColumn(1); // Hours
-                        columns.RelativeColumn(1); // Rate
-                        columns.RelativeColumn(1); // Amount
+                        columns.RelativeColumn(4); 
+                        columns.RelativeColumn(1); 
+                        columns.RelativeColumn(1); 
+                        columns.RelativeColumn(1); 
                     });
 
-                    // Header
+                   
                     table.Header(header =>
                     {
                         header.Cell().Background(Colors.Grey.Lighten3).Padding(5).Text("Description").Bold();
@@ -92,21 +92,21 @@ namespace CMCSP3.Reports
                         header.Cell().Background(Colors.Grey.Lighten3).Padding(5).AlignRight().Text("Amount").Bold();
                     });
 
-                    // Claim row
+                   
                     table.Cell().Padding(5).Text($"Lecturing Claim for period ending {Claim.ClaimDate:yyyy-MM-dd}");
                     table.Cell().Padding(5).AlignRight().Text($"{Claim.HoursWorked:F2}");
-                    table.Cell().Padding(5).AlignRight().Text($"{Claim.HourlyRate:C2}"); // Use C2 for currency formatting
+                    table.Cell().Padding(5).AlignRight().Text($"{Claim.HourlyRate:C2}"); 
                     table.Cell().Padding(5).AlignRight().Text($"{Claim.ClaimAmount:C2}").Bold();
                 });
 
-                // Summary Box
+                
                 column.Item().Padding(10).Border(1).Column(col =>
                 {
                     col.Item().Text($"Claim Status: {Claim.Status}").FontSize(12);
                     col.Item().Text($"TOTAL PAYABLE: {Claim.ClaimAmount:C2}").Bold().FontSize(16);
                 });
 
-                // Payment Notes
+               
                 column.Item().PaddingTop(10).Text("Payment Notes:").Bold().Underline().FontSize(12);
                 column.Item().Text($"This payment corresponds to {Claim.HoursWorked:F2} approved hours at a fixed rate of {Claim.HourlyRate:C2} per hour.").Italic();
             });

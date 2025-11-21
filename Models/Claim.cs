@@ -35,7 +35,7 @@ namespace CMCSP3.Models
         public string? SupportingDocumentPath { get; set; }
 
         [Display(Name = "Status")]
-        public string Status { get; set; } = "Draft";  // changed default from Pending
+        public string Status { get; set; } = "Draft"; //pending
 
         [Display(Name = "Verified By")]
         public string? VerifiedBy { get; set; }

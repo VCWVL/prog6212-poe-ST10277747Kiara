@@ -6,7 +6,7 @@ namespace CMCSP3.Services
     {
         public static string Hash(string password)
         {
-            // Generates a 12-round salted hash
+            
             return BCrypt.Net.BCrypt.HashPassword(password, 12);
         }
 
