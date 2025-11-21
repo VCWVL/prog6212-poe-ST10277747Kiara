@@ -1,0 +1,62 @@
+﻿@model IEnumerable<CMCSP3.Models.Claim>
+
+@{
+    ViewData["Title"] = "My Claims";
+}
+
+<h2>My Claims</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">You have no claims submitted.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Document</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.HoursWorked</td>
+                    <td>@claim.HourlyRate.ToString("C")</td>
+                    <td>@claim.ClaimAmount.ToString("C")</td>
+
+                    <td>
+                        <span class="badge @(
+                              claim.Status == "Pending" ? "bg-warning text-dark" :
+                              claim.Status == "Verified" ? "bg-info" :
+                              claim.Status == "Approved" ? "bg-success" : "bg-danger"
+                                                )">@claim.Status</span>
+                </td>
+
+                    <td>
+                @if (!string.IsNullOrEmpty(claim.SupportingDocumentPath))
+                        {
+                <a href="@claim.SupportingDocumentPath" target="_blank">View</a>
+                                
+                                < a href = "@claim.SupportingDocumentPath" download = "@claim.OriginalDocumentName" > Download </ a >
+                                }
+                        else
+                        {
+                            <span>No File</span>
+                        }
+                    </td>
+
+                    <td>
+                        <a asp-action="Details" asp-route-id="@claim.ClaimId" class="btn btn-info btn-sm">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

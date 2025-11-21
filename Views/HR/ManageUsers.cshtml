@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CMCSP3.Models.User>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Manage Users</h2>
+        <a asp-action="AddUser" class="btn btn-success">
+            <i class="fas fa-plus"></i> Add New User
+        </a>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary btn-sm mb-3">← Back to HR Dashboard</a>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">@Html.Raw(TempData["SuccessMessage"])</div>
+    }
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="bg-success text-white">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Hourly Rate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.LecturerId</td>
+                    <td>@user.Username</td>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td>@user.HourlyRate.ToString("C2")</td>
+                    <td>
+                        <a asp-action="EditUser" asp-route-id="@user.LecturerId" class="btn btn-sm btn-info">Edit</a>
+                        @* Typically, delete is a separate POST action or modal confirmation *@
+                        @* <button class="btn btn-sm btn-danger" disabled>Delete</button> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

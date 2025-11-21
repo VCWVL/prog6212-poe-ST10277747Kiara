@@ -1,0 +1,67 @@
+﻿@model CMCSP3.Models.Claim
+
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<h2 class="mb-4 text-center">Claim Details</h2>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+
+        <p><strong>Lecturer ID:</strong> @Model.LecturerId</p>
+        <p><strong>Hours Worked:</strong> @Model.HoursWorked</p>
+        <p><strong>Hourly Rate:</strong> @Model.HourlyRate.ToString("C")</p>
+        <p><strong>Claim Amount:</strong> @Model.ClaimAmount.ToString("C")</p>
+
+        <p>
+            <strong>Status:</strong>
+            @if (Model.Status == "Pending")
+            {
+                <span class="badge bg-warning text-dark">Pending</span>
+            }
+            else if (Model.Status == "Verified")
+            {
+                <span class="badge bg-info">Verified</span>
+            }
+            else if (Model.Status == "Approved")
+            {
+                <span class="badge bg-success">Approved</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Rejected</span>
+            }
+        </p>
+
+        <p><strong>Notes:</strong> @(string.IsNullOrWhiteSpace(Model.Notes) ? "None" : Model.Notes)</p>
+
+        @if (!string.IsNullOrEmpty(Model.SupportingDocumentPath))
+        {
+            <p><strong>Document Name:</strong> @Model.OriginalDocumentName</p>
+
+            <p>
+                <a href="@Model.SupportingDocumentPath" target="_blank" class="btn btn-info btn-sm">
+                    View Document
+                </a>
+
+                <a href="@Model.SupportingDocumentPath"
+                   download="@Model.OriginalDocumentName"
+                   class="btn btn-secondary btn-sm">
+                    Download Document
+                </a>
+            </p>
+        }
+        else
+        {
+            <p><strong>Document:</strong> No document uploaded.</p>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ApprovedBy))
+        {
+            <p><strong>Verified/Approved By:</strong> @Model.ApprovedBy (@Model.ApproverRole)</p>
+        }
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary w-100">Back to Claims</a>

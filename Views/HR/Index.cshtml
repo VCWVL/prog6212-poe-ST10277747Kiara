@@ -1,0 +1,60 @@
+﻿@* This view represents the hr dashboard.jpeg screenshot *@
+@{
+    ViewData["Title"] = "HR Dashboard";
+    // Dummy data for visual representation (Replace with actual data in HRController)
+    ViewBag.TotalUsers = 15;
+    ViewBag.Lecturers = 12;
+    ViewBag.TotalClaims = 55;
+    ViewBag.PendingClaims = 5;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-success">👩‍💼 HR Manager Dashboard</h2>
+    <p class="text-center text-muted">Manage user accounts and process payroll claims for payment.</p>
+
+    <hr />
+
+    <div class="row text-center">
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text display-4 text-primary">@ViewBag.TotalUsers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Lecturers</h5>
+                    <p class="card-text display-4 text-info">@ViewBag.Lecturers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Claims</h5>
+                    <p class="card-text display-4 text-secondary">@ViewBag.TotalClaims</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Claims</h5>
+                    <p class="card-text display-4 text-danger">@ViewBag.PendingClaims</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-4 text-center">
+            <a asp-action="ManageUsers" class="btn btn-lg btn-success w-100 mb-3">👥 Manage Users (Add/Edit)</a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a asp-action="ViewReports" class="btn btn-lg btn-primary w-100 mb-3">📄 View Reports / Invoices</a>
+        </div>
+    </div>
+</div>

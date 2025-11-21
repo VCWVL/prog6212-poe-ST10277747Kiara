@@ -1,0 +1,131 @@
+﻿@* @{
+    ViewData["Title"] = "Confirmation";
+    var status = ViewBag.Status as string;
+    var message = ViewBag.Message as string;
+
+    // Define variables for dynamic content
+    var title = "";
+    var iconClass = "";
+    var boxClass = "";
+    var iconHtml = "";
+
+    if (status == "Approved")
+    {
+        title = "Claim Approved";
+        iconHtml = "<span style='color: #28a745; font-size: 30px;'>✅</span>";
+        boxClass = "success-box";
+    }
+    else if (status == "Rejected")
+    {
+        title = "Claim Rejected";
+        iconHtml = "<span style='color: #dc3545; font-size: 30px;'>❌</span>";
+        boxClass = "danger-box";
+    }
+    else
+    {
+        title = "Action Status";
+        iconHtml = "<span style='color: #ffc107; font-size: 30px;'>⚠️</span>";
+        boxClass = "warning-box";
+    }
+}
+
+<style>
+    /* Styling for the confirmation box to mimic the image */
+    .confirmation-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh; /* Adjust as needed */
+        background-color: #f7f7f7; /* Light background for contrast */
+    }
+
+    .confirmation-box {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        padding: 40px 50px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .confirmation-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .confirmation-title {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .confirmation-message {
+        font-size: 16px;
+        color: #6c757d;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-dashboard {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-dashboard:hover {
+            background-color: #0056b3;
+            color: white; /* Keep text white on hover */
+        }
+
+    /* Specific status styles */
+    .success-text {
+        color: #28a745;
+    }
+
+    .danger-text {
+        color: #dc3545;
+    }
+
+    .warning-text {
+        color: #ffc107;
+    }
+</style>
+
+<div class="confirmation-container">
+    <div class="confirmation-box">
+
+        @if (!string.IsNullOrEmpty(status) && status != "Error")
+        {
+            <div class="confirmation-title @(status == "Approved" ? "success-text" : "danger-text")">
+                @iconHtml @title
+            </div>
+
+            <div class="confirmation-message">
+                @iconHtml @message
+            </div>
+        }
+        else
+        {
+            <div class="confirmation-title warning-text">
+                <span class="confirmation-icon">⚠️</span> @title
+            </div>
+            <p class="confirmation-message">@message</p>
+        }
+
+        <a href="@Url.Action("Index", "AcademicManager")" class="btn-dashboard">
+            Back to Dashboard
+        </a>
+    </div>
+</div> *@

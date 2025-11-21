@@ -1,0 +1,54 @@
+﻿@model List<(CMCSP3.Models.Claim Claim, CMCSP3.Models.User Lecturer)>
+
+@{
+    ViewData["Title"] = "Claims Ready for Payment";
+}
+
+<div class="container mt-4">
+    <h2>Claims Ready for Payment</h2>
+    <p>Below is a list of approved claims ready for HR processing (invoice generation).</p>
+    <a asp-action="Index" class="btn btn-secondary mb-3">← Back to HR Dashboard</a>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No approved claims are currently waiting for HR processing.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped mt-3 table-hover">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Lecturer</th>
+                    <th>Email</th>
+                    <th>Date Submitted</th>
+                    <th>Hours Worked</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Claim.ClaimId</td>
+                        <td>@item.Lecturer.FirstName @item.Lecturer.LastName</td>
+                        <td>@item.Lecturer.Email</td>
+                        <td>@item.Claim.SubmittedDate?.ToShortDateString()</td>
+                        <td>@item.Claim.HoursWorked</td>
+                        <td>@item.Claim.HourlyRate.ToString("C2")</td>
+                        <td>@item.Claim.ClaimAmount.ToString("C2")</td>
+                        <td>@item.Claim.Status</td>
+                        <td>
+                            <a asp-action="DownloadInvoice" asp-route-id="@item.Claim.ClaimId" class="btn btn-sm btn-success">
+                                <i class="bi bi-download"></i> Download PDF
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

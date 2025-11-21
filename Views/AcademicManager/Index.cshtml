@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CMCSP3.Models.Claim>
+@{
+    ViewData["Title"] = "Academic Manager Dashboard";
+}
+<h2>Claims Pending Approval</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No verified claims to approve.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Lecturer ID</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Document</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr>
+                    <td>@claim.LecturerId</td>
+                    <td>@claim.HoursWorked</td>
+                    <td>@claim.HourlyRate.ToString("C")</td>
+                    <td>@claim.ClaimAmount.ToString("C")</td>
+                    <td>@claim.Status</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(claim.SupportingDocumentPath))
+                        {
+                            <text>
+                                <a href="@claim.SupportingDocumentPath" target="_blank">View</a> |
+                                <a href="@claim.SupportingDocumentPath" download="@System.IO.Path.GetFileName(claim.SupportingDocumentPath)">Download</a>
+                            </text>
+                        }
+                    </td>
+
+                    <td>
+                        <form asp-action="Approve" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@claim.ClaimId" />
+                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                        </form>
+                        <form asp-action="Reject" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@claim.ClaimId" />
+                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

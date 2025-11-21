@@ -1,0 +1,59 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Document Storage";
+}
+
+<h2>Document Storage</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<form asp-action="Upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Upload Document</label>
+        <input type="file" name="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Upload</button>
+</form>
+
+<hr />
+
+<h4>Existing Documents</h4>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No documents uploaded yet.</p>
+}
+else
+{
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in Model)
+            {
+                <tr>
+                    <td>@file</td>
+                    <td>
+                        <a href="/Documents/Details?fileName=@file" class="btn btn-info btn-sm">Details</a>
+                        <a href="/Documents/Download?fileName=@file" class="btn btn-primary btn-sm">Download</a>
+                        <a href="/Documents/Delete?fileName=@file"
+                           onclick="return confirm('Delete this file?')"
+                           class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

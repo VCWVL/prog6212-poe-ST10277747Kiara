@@ -1,0 +1,122 @@
+﻿@model IEnumerable<CMCSP3.Models.Claim>
+
+@{
+    ViewData["Title"] = "Programme Coordinator Dashboard";
+}
+
+<style>
+    .dashboard-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-card {
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        background-color: white;
+        margin-bottom: 20px;
+    }
+
+        .dashboard-card h2 {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+    .status-box {
+        padding: 18px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .pending-box {
+        background-color: #fff3cd;
+        color: #856404;
+        border-left: 5px solid #ffc107;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .btn-action {
+        width: 100px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <h1>📘 Programme Coordinator Dashboard</h1>
+        <p>Manage all <b>Pending Claims</b></p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Pending Claims</h2>
+
+        @if (!Model.Any())
+        {
+            <div class="status-box pending-box">
+                <span>⚠ No pending claims.</span>
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Claim ID</th>
+                        <th>Lecturer ID</th>
+                        <th>Hours</th>
+                        <th>Amount</th>
+                        <th>Document</th>
+                        <th>Verify</th>
+                        <th>Reject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var claim in Model)
+                    {
+                        <tr>
+                            <td>@claim.ClaimId</td>
+                            <td>@claim.LecturerId</td>
+                            <td>@claim.HoursWorked</td>
+                            <td>@claim.ClaimAmount.ToString("C")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(claim.SupportingDocumentPath))
+                                {
+                                    <a href="@claim.SupportingDocumentPath" target="_blank">View</a>
+                                }
+                            </td>
+                            <td>
+                                <form method="post" asp-action="Verification" asp-route-id="@claim.ClaimId">
+                                    <button class="btn btn-success btn-action" type="submit">Verify</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" asp-action="Reject" asp-route-id="@claim.ClaimId">
+                                    <button class="btn btn-danger btn-action" type="submit">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>

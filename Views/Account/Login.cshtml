@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Login to Your Account</h4>
+                </div>
+                <div class="card-body">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">@ViewBag.Error</div>
+                    }
+
+                    <form asp-action="Login" method="post">
+                        <div class="text-center mb-4">
+                            <img id="profileImage" src="https://www.w3schools.com/howto/img_avatar.png"
+                                 alt="Profile Image" class="rounded-circle border border-secondary"
+                                 width="120" height="120">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="role">Role</label>
+                            <select class="form-control" name="role" id="roleDropdown" required>
+                                <option value="">-- Select Role --</option>
+                                <option value="HR">HR</option>
+                                <option value="Lecturer">Lecturer</option>
+                                <option value="ProgrammeCoordinator">Program Coordinator</option>
+                                <option value="AcademicManager">Academic Manager</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" name="username" id="username" required />
+                        </div>
+
+                        <div class="form-group mb-1">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" required />
+                        </div>
+
+                        <div class="mb-3 text-end">
+                            <a asp-action="ForgotPassword" asp-controller="Account" style="font-size: 0.9rem;">
+                                Forgot your password?
+                            </a>
+                        </div>
+
+                        <small class="form-text text-muted mb-3">
+                            Password must be at least 8 characters long and include a number, uppercase letter, and special character.
+                        </small>
+
+                        <div class="form-group mb-3" id="lecturerIdGroup" style="display: none;">
+                            <label for="lecturerId">Lecturer ID</label>
+                            <input type="number" class="form-control" name="lecturerId" id="lecturerId" />
+                        </div>
+
+                        <!-- HR LOGIN NOTE: Select Role=HR, Username=hr1, Password=HR.Company@1004 -->
+
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const usernameInput = document.getElementById('username');
+            const profileImage = document.getElementById('profileImage');
+            const roleDropdown = document.getElementById('roleDropdown');
+            const lecturerIdGroup = document.getElementById('lecturerIdGroup');
+            const lecturerIdInput = document.getElementById('lecturerId');
+
+            usernameInput.addEventListener('input', function () {
+                const username = usernameInput.value.trim();
+
+                if (username !== '') {
+                    const avatarUrl = `https://robohash.org/${encodeURIComponent(username)}.png?size=120x120`;
+                    profileImage.src = avatarUrl;
+                } else {
+                    profileImage.src = 'https://www.w3schools.com/howto/img_avatar.png';
+                }
+            });
+
+            // Conditional visibility for Lecturer ID field
+            function updateLecturerIdVisibility() {
+                const selectedRole = roleDropdown.value;
+                if (selectedRole === 'Lecturer') {
+                    lecturerIdGroup.style.display = 'block';
+                    lecturerIdInput.setAttribute('required', 'required');
+                } else {
+                    lecturerIdGroup.style.display = 'none';
+                    lecturerIdInput.removeAttribute('required');
+                }
+            }
+
+            roleDropdown.addEventListener('change', updateLecturerIdVisibility);
+
+            // Set initial visibility
+            updateLecturerIdVisibility();
+        });
+    </script>
+}
