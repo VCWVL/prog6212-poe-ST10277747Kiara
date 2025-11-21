@@ -1,0 +1,116 @@
+﻿@model List<CMCSPART3.Models.Claim>
+
+@{
+    ViewData["Title"] = "Academic Manager Dashboard";
+}
+
+<style>
+    .dashboard-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-card {
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        background-color: white;
+        margin-bottom: 20px;
+    }
+
+        .dashboard-card h2 {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+    .status-box {
+        padding: 18px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .verified-box {
+        background-color: #d4edda;
+        color: #155724;
+        border-left: 5px solid #28a745;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+    }
+
+    .btn-action {
+        width: 85px;
+    }
+</style>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <h1>📘 Academic Manager Dashboard</h1>
+        <p>Manage all <b>Verified Claims</b></p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Verified Claims</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="status-box verified-box">
+                <span>✔ No verified claims available.</span>
+            </div>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Claim ID</th>
+                        <th>Lecturer ID</th>
+                        <th>Hours Worked</th>
+                        <th>Status</th>
+                        <th>Approve</th>
+                        <th>Reject</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var claim in Model)
+                    {
+                        <tr>
+                            <td>@claim.ClaimId</td>
+                            <td>@claim.LecturerId</td>
+                            <td>@claim.HoursWorked</td>
+                            <td style="color:green; font-weight:bold;">✔ @claim.Status</td>
+
+                            <td>
+                                <form method="post" asp-action="Approve" asp-route-id="@claim.ClaimId">
+                                    <button class="btn btn-success btn-action" type="submit">Approve</button>
+                                </form>
+                            </td>
+
+                            <td>
+                                <form method="post" asp-action="Reject" asp-route-id="@claim.ClaimId">
+                                    <button class="btn btn-danger btn-action" type="submit">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>

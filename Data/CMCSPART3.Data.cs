@@ -12,7 +12,7 @@ namespace CMCSPART3.Data
         {
         }
 
-        public DbSet<Claim> Claims { get; set; }
+        public DbSet<CMCSPART3.Models.Claim> Claims { get; set; }
 
         // If you have a Document model, use this:
         // public DbSet<Document> Documents { get; set; }
